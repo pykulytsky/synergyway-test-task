@@ -1,0 +1,1 @@
+# synergyway-test-task
