@@ -1,0 +1,27 @@
+version: "3.3"
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=synergyway
+      - POSTGRES_USER=pykulytsky
+      - POSTGRES_PASSWORD=synergyway16
+  backend:
+    build: ./backend
+    command: poetry run uwsgi --http 0.0.0:8000 --ini uwsgi.ini --master --process 4 --threads 2
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    container_name: backend
+  frontend:
+    build: ./frontend
+    command: ["nginx", "-g", "daemon off;"]
+    volumes:
+      - ./frontend:/app/frontend
+    depends_on:
+      - backend
+    container_name: frontend
