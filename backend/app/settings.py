@@ -18,7 +18,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'rest_framework'
+    'rest_framework',
+
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -59,10 +61,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'synergyway',
-        'USER' : 'o_p',
-        'PASSWORD' : '#pragma_once',
-        'HOST' : '127.0.0.1',
-        'PORT' : '5432',
+        'USER': 'o_p',
+        'PASSWORD': '#pragma_once',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
