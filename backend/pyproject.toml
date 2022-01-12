@@ -13,6 +13,8 @@ Django = "^4.0.1"
 djangorestframework = "^3.13.1"
 psycopg2 = "^2.9.3"
 django-environ = "^0.8.1"
+uWSGI = "^2.0.20"
+django-cors-headers = "^3.11.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
@@ -27,3 +29,4 @@ build-backend = "poetry.core.masonry.api"
 dev = 'scripts.server:main'
 mm = 'scripts.mm:main'
 migrate = 'scripts.migrate:main'
+prod = 'scripts.prod:main'

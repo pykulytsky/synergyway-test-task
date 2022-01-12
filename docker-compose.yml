@@ -9,7 +9,7 @@ services:
       - POSTGRES_PASSWORD=synergyway16
   backend:
     build: ./backend
-    command: poetry run uwsgi --http 0.0.0:8000 --ini uwsgi.ini --master --process 4 --threads 2
+    command: poetry run prod
     volumes:
       - ./backend:/app/backend
     ports:
