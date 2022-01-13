@@ -68,9 +68,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'synergyway',
-        'USER': config('DB_USER', cast=str, default='pykulytsky'),
-        'PASSWORD': config('DB_PASSWORD', default='synergyway16'),
-        'HOST': config('DB_HOST', default="db"),
+        'USER': 'pykulytsky',
+        'PASSWORD': 'synergyway16',
+        'HOST': "db",
         'PORT': '5432',
     }
 }
