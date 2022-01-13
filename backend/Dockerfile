@@ -10,11 +10,8 @@ COPY pyproject.toml pyproject.toml
 COPY /scripts /app/backend/scripts
 
 RUN poetry install
-RUN poetry add uwsgi
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONBUFFERED 1
 
 COPY . ./app/backend
-
-RUN ls

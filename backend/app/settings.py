@@ -1,12 +1,14 @@
 from pathlib import Path
+from decouple import config
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-fs1t4-=+v&&6h7_wy2!e8*0s8r)2+jk#!^z$t%d(yfx-j2zths'
+SECRET_KEY = config('SECRET_KEY', cast=str, default='dlsla123dsfsdfd3dfdfdf')
 
-DEBUG = True
+DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,7 +36,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://localhost'
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -65,9 +68,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'synergyway',
-        'USER': 'o_p',
-        'PASSWORD': '#pragma_once',
-        'HOST': '127.0.0.1',
+        'USER': config('DB_USER', cast=str, default='pykulytsky'),
+        'PASSWORD': config('DB_PASSWORD', default='synergyway16'),
+        'HOST': config('DB_HOST', default="db"),
         'PORT': '5432',
     }
 }
