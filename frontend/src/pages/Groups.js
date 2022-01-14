@@ -34,7 +34,7 @@ export const Groups = () => {
         setGroups(response.data)
     }
 
-    function notify(message="Username must contain at least 6 characters") {
+    function notify(message="Name or description is invalid") {
         store.addNotification({
             title: "Error",
             message,
@@ -61,7 +61,7 @@ export const Groups = () => {
     }
 
     async function patchGroup() {
-        if (name.match(/^[a-zA-Z\-]+$/) && description.match(/^[a-zA-Z\-]+$/)) {
+        if (name.match(/^[a-zA-Z0-9]+$/) && description.match(/^[a-zA-Z0-9]+$/)) {
             const response = await axios.patch(
                 BASE_ENDPOINT + currentGroup.id + '/',
                 {
@@ -78,8 +78,7 @@ export const Groups = () => {
     }
 
     async function addNewGroup() {
-        console.log(newGroup)
-        if (newGroup.name.match(/^[a-zA-Z0-9]+$/) && newGroup.description.match(/^[a-zA-Z0-9]+$/)) {
+        if (newGroup.name.match() && newGroup.description.match(/^[a-zA-Z0-9]+$/)) {
             const response = await axios.post(
                 BASE_ENDPOINT,
                 {...newGroup}
