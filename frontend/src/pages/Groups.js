@@ -61,8 +61,8 @@ export const Groups = () => {
     }
 
     async function patchGroup() {
-        if (name.match(/^[a-zA-Z0-9]+$/) && description.match(/^[a-zA-Z0-9]+$/)) {
-            const response = await axios.patch(
+        if (name.match(/^[a-zA-Z0-9]+$/) && description.length > 1) {
+            await axios.patch(
                 BASE_ENDPOINT + currentGroup.id + '/',
                 {
                     name,
@@ -78,8 +78,8 @@ export const Groups = () => {
     }
 
     async function addNewGroup() {
-        if (newGroup.name.match() && newGroup.description.match(/^[a-zA-Z0-9]+$/)) {
-            const response = await axios.post(
+        if (newGroup.name.match(/^[a-zA-Z0-9]+$/) && newGroup.description.length > 1) {
+            await axios.post(
                 BASE_ENDPOINT,
                 {...newGroup}
             )

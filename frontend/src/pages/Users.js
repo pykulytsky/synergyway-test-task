@@ -45,7 +45,7 @@ export const Users = () => {
     }
 
     async function deleteUser(e, userId) {
-        const res = await axios.delete(BASE_ENDPOINT + userId + '/')
+        await axios.delete(BASE_ENDPOINT + userId + '/')
         await getUsers()
     }
 
@@ -77,7 +77,7 @@ export const Users = () => {
 
     async function patchUser() {
         if (username.match(/^[a-zA-Z0-9]{6,16}$/)) {
-            const response = await axios.patch(
+            await axios.patch(
                 BASE_ENDPOINT + currentUser.id + '/',
                 {
                     username,
@@ -94,7 +94,7 @@ export const Users = () => {
 
     async function addNewUser() {
         if (newUser.username.match(/^[a-zA-Z0-9]{6,16}$/)) {
-            const response = await axios.post(
+            await axios.post(
                 BASE_ENDPOINT,
                 { ...newUser }
             )
