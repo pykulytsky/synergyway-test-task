@@ -110,7 +110,7 @@ export const Users = () => {
     return (
         <div>
 
-            <Navbar currentPage={'users'} newIsShown={newIsShown} setNewIsShown={setNewIsShown} />
+            <Navbar currentPage={'users'} newIsShown={newIsShown} setNewIsShown={setNewIsShown} isGroupExists={groups.length > 0} />
             <div className="content-table">
                 <Table>
                     <Table.Head>

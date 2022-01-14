@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', cast=str, default='dlsla123dsfsdfd3dfdfdf')
 
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
 
