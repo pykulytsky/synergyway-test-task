@@ -4,7 +4,7 @@
 
 1. Clone this repository
 ```
-git clone {link}
+git clone https://github.com/pykulytsky/synergyway-test-task.git 
 ```
 2. Change your directory to project directory 
 ```
