@@ -1,4 +1,4 @@
-FROM node:17
+FROM node:17 as build
 
 WORKDIR /app/frontend
 
@@ -10,10 +10,8 @@ COPY . /app/frontend
 
 RUN npm run build
 
-EXPOSE 3000
+FROM nginx:stable-alpine
 
-# FROM nginx:stable-alpine
+COPY --from=build /app/frontend/build /usr/share/nginx/html
 
-# COPY --from=build /app/frontend/build /usr/share/nginx/html
-
-# EXPOSE 80
+EXPOSE 80

@@ -18,6 +18,7 @@ docker-compose build
 ```
 docker-compose run backend poetry run migrate
 ```
+If this command causes an error, please move to the next step, stop Docker Compose after a few seconds and do this step again.
 5. Deploy using Docker Compose
 ```
 docker-compose up
