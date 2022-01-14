@@ -4,9 +4,9 @@
 
 1. Clone this repository
 ```
-git clone https://github.com/pykulytsky/synergyway-test-task.git 
+git clone https://github.com/pykulytsky/synergyway-test-task.git
 ```
-2. Change your directory to project directory 
+2. Change your directory to project directory
 ```
 cd synergyway-test-task
 ```
@@ -18,7 +18,8 @@ docker-compose build
 ```
 docker-compose run backend poetry run migrate
 ```
-If this command causes an error, please move to the next step, stop Docker Compose after a few seconds and do this step again.
+*If this command causes an error, please move to the next step, stop Docker Compose after a few seconds and do this step again.*
+
 5. Deploy using Docker Compose
 ```
 docker-compose up
