@@ -11,6 +11,8 @@ import {
     TextInput,
 } from 'evergreen-ui'
 import axios from 'axios'
+import { store } from 'react-notifications-component';
+
 
 export const Users = () => {
     const BASE_ENDPOINT = 'http://localhost:8000/users/'
@@ -23,7 +25,7 @@ export const Users = () => {
     let [groups, setGroups] = useState([])
     let [group, setGroup] = useState(0)
 
-    let [newUser, setNewUser] = useState({username: '', group: 1})
+    let [newUser, setNewUser] = useState({ username: '', group: 1 })
 
     useEffect(() => {
         fetchGroups()
@@ -44,12 +46,11 @@ export const Users = () => {
 
     async function deleteUser(e, userId) {
         const res = await axios.delete(BASE_ENDPOINT + userId + '/')
-        console.log(res.data)
         await getUsers()
     }
 
     function getGroupName(user) {
-        try{
+        try {
             const groupName = groups.filter(group => group.id === user.group)[0].name
             return groupName
         }
@@ -58,8 +59,24 @@ export const Users = () => {
         }
     }
 
+    function notify() {
+        store.addNotification({
+            title: "Error",
+            message: "Username must contain at least 6 characters",
+            type: "danger",
+            insert: "top",
+            container: "top-center",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+                duration: 3000,
+                onScreen: true
+            }
+        });
+    }
+
     async function patchUser() {
-        if (username.match(/^[a-zA-Z0-9]+$/)) {
+        if (username.match(/^[a-zA-Z0-9]{6,16}$/)) {
             const response = await axios.patch(
                 BASE_ENDPOINT + currentUser.id + '/',
                 {
@@ -67,28 +84,26 @@ export const Users = () => {
                     group
                 }
             )
-            console.log(response.data)
             await getUsers()
             setEditIsShown(false)
         }
         else {
-            alert("Username must be valid")
+            notify()
         }
     }
 
     async function addNewUser() {
-        if (newUser.username.match(/^[a-zA-Z0-9]+$/)) {
-            console.log(newUser)
+        if (newUser.username.match(/^[a-zA-Z0-9]{6,16}$/)) {
             const response = await axios.post(
                 BASE_ENDPOINT,
-                {...newUser}
+                { ...newUser }
             )
-            console.log(response.data)
             await getUsers()
             setNewIsShown(false)
+            setNewUser({ username: '', group: 0 })
         }
         else {
-            alert("Username must be valid")
+            notify()
         }
     }
 
@@ -98,7 +113,7 @@ export const Users = () => {
             <Navbar currentPage={'users'} newIsShown={newIsShown} setNewIsShown={setNewIsShown} />
             <div className="content-table">
                 <Table>
-                   <Table.Head>
+                    <Table.Head>
                         <Table.TextHeaderCell>Username</Table.TextHeaderCell>
                         <Table.TextHeaderCell>Created</Table.TextHeaderCell>
                         <Table.TextHeaderCell>Group</Table.TextHeaderCell>
@@ -167,17 +182,21 @@ export const Users = () => {
                     title="Add new user"
                     shouldCloseOnOverlayClick={false}
                     confirmLabel="Save"
-                    onCloseComplete={addNewUser}
+                    onConfirm={addNewUser}
+                    onCancel={(e) => {
+                        setNewIsShown(false)
+                        setNewUser({ username: '', group: 0 })
+                    }}
                 >
                     <p>Username: </p>
                     <TextInput value={newUser.username} onChange={(e) => {
-                        setNewUser({username: e.target.value, group: newUser.group})
+                        setNewUser({ username: e.target.value, group: newUser.group })
                     }} name="username-input" placeholder="Username..." />
                     <p>Group: </p>
                     <Select
                         width={280}
                         value={newUser.group}
-                        onChange={event => setNewUser({username: newUser.username, group: event.target.value})}
+                        onChange={event => setNewUser({ username: newUser.username, group: event.target.value })}
                     >
                         {groups.map((gr) => (
                             <option key={gr.id} value={gr.id}>

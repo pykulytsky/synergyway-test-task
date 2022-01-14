@@ -10,8 +10,11 @@ import {
     TextInput,
 } from 'evergreen-ui'
 import axios from 'axios'
+import { store } from 'react-notifications-component';
 
 export const Groups = () => {
+    const BASE_ENDPOINT = 'http://localhost:8000/groups/'
+
     let [editIsShown, setEditIsShown] = useState(false)
     let [newIsShown, setNewIsShown] = useState(false)
     let [name, setName] = useState('')
@@ -19,8 +22,6 @@ export const Groups = () => {
     let [groups, setGroups] = useState([])
     let [currentGroup, setCurrentGroup] = useState(groups)
     let [newGroup, setNewGroup] = useState({name: '', description: ''})
-    let [isEditValid, setIsEditValid] = useState(false)
-    let [isNewValid, setIsNewValid] = useState(false)
 
     useEffect(() => {
         fetchGroups()
@@ -29,52 +30,66 @@ export const Groups = () => {
     }, [currentGroup])
 
     async function fetchGroups() {
-        const response = await axios.get('http://localhost:8000/groups/')
+        const response = await axios.get(BASE_ENDPOINT)
         setGroups(response.data)
+    }
+
+    function notify(message="Username must contain at least 6 characters") {
+        store.addNotification({
+            title: "Error",
+            message,
+            type: "danger",
+            insert: "top",
+            container: "top-center",
+            animationIn: ["animate__animated", "animate__fadeIn"],
+            animationOut: ["animate__animated", "animate__fadeOut"],
+            dismiss: {
+                duration: 2000,
+                onScreen: true
+            }
+        });
     }
 
     async function deleteGroup(e, groupId) {
         try {
-            const res = await axios.delete('http://localhost:8000/groups/' + groupId + '/')
-        console.log(res.data)
+            const res = await axios.delete(BASE_ENDPOINT + groupId + '/')
         await fetchGroups()
         }
         catch {
-            alert("Group deletion is impossible because at least one user is assigned to this group.")
+            notify("Group deletion is impossible because at least one user is assigned to this group.")
         }
     }
 
     async function patchGroup() {
         if (name.match(/^[a-zA-Z\-]+$/) && description.match(/^[a-zA-Z\-]+$/)) {
             const response = await axios.patch(
-                'http://localhost:8000/groups/' + currentGroup.id + '/',
+                BASE_ENDPOINT + currentGroup.id + '/',
                 {
                     name,
                     description
                 }
             )
-            console.log(response.data)
             await fetchGroups()
             setEditIsShown(false)
         }
         else {
-            alert("Inputs must be valid")
+            notify()
         }
     }
 
     async function addNewGroup() {
-        if (newGroup.name.match(/^[a-zA-Z\-]+$/) && newGroup.descriptio.match(/^[a-zA-Z\-]+$/)) {
-            console.log(newGroup)
+        console.log(newGroup)
+        if (newGroup.name.match(/^[a-zA-Z0-9]+$/) && newGroup.description.match(/^[a-zA-Z0-9]+$/)) {
             const response = await axios.post(
-                'http://localhost:8000/groups/',
+                BASE_ENDPOINT,
                 {...newGroup}
             )
-            console.log(response.data)
             await fetchGroups()
             setNewIsShown(false)
+            setNewGroup({name: '', description: ''})
         }
         else {
-            alert("Inputs must be valid")
+            notify()
         }
     }
 
@@ -122,7 +137,11 @@ export const Groups = () => {
                     title="Edit the group"
                     shouldCloseOnOverlayClick={false}
                     confirmLabel="Save"
-                    onCloseComplete={patchGroup}
+                    onConfirm={patchGroup}
+                    onCancel={(e) => {
+                        setEditIsShown(false)
+                        setCurrentGroup(groups[0])
+                    }}
                 >
                     <p>Name: </p>
                     <TextInput value={name} onChange={(e) => {
@@ -141,7 +160,11 @@ export const Groups = () => {
                     title="Add new group"
                     shouldCloseOnOverlayClick={false}
                     confirmLabel="Save"
-                    onCloseComplete={addNewGroup}
+                    onConfirm={addNewGroup}
+                    onCancel={(e) => {
+                        setNewIsShown(false)
+                        setNewGroup({name: '', description: ''})
+                    }}
                 >
                     <p>Name: </p>
                     <TextInput value={newGroup.name} onChange={(e) => {
